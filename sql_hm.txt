@@ -94,3 +94,57 @@
  32. Вывести id пользователя, имя, дату создания пользователя. Отсортировать по порядку убывания даты добавления пользоватлеля.
  select user_id , username ,created_on from qa_users order by created_on desc 
 -------------------------------------------------------------------------------------------------------------------
+ 33. Вывести всех работников чьи зарплаты есть в базе, вместе с зарплатами.
+ select employee_name,monthly_salary from employees
+ join employees_salary 
+ on employees.id = employees_salary.employee_id
+-------------------------------------------------------------------------------------------------------------------
+ 34. Вывести всех работников у которых ЗП меньше 2000.
+ select employee_name from employees
+ join employees_salary 
+ on employees.id = employees_salary.employee_id
+ where monthly_salary < 2000
+-------------------------------------------------------------------------------------------------------------------
+ 35. Вывести все зарплатные позиции, но работник по ним не назначен. (ЗП есть, но не понятно кто её получает.)
+ select employees_salary.id,monthly_salary from employees
+ right join employees_salary 
+ on employees.id = employees_salary.employee_id
+ where employees.id is null
+-------------------------------------------------------------------------------------------------------------------
+ 36. Вывести все зарплатные позиции  меньше 2000 но работник по ним не назначен. (ЗП есть, но не понятно кто её получает.)
+  select employees_salary.id,monthly_salary from employees
+ right join employees_salary 
+ on employees.id = employees_salary.employee_id
+ where employees.id is null and monthly_salary < 2000
+-------------------------------------------------------------------------------------------------------------------
+ 37. Найти всех работников кому не начислена ЗП.
+ select employees.id ,employee_name from employees
+ left join employees_salary 
+ on employees.id = employees_salary.employee_id
+ where employees_salary.employee_id is null
+-------------------------------------------------------------------------------------------------------------------
+ 38. Вывести всех работников с названиями их должности.
+ select employee_name,role_name from roles_employees
+ join roles
+ on roles_employees.role_id = roles.id 
+ join employees
+ on roles_employees.employee_id = employees.id 
+ -------------------------------------------------------------------------------------------------------------------
+ 39. Вывести имена и должность только Java разработчиков.
+ select employee_name,role_name from roles_employees
+ join roles
+ on roles_employees.role_id = roles.id 
+ join employees
+ on roles_employees.employee_id = employees.id 
+ where role_name like '%Java developer' 
+ -------------------------------------------------------------------------------------------------------------------
+ 40. Вывести имена, должности и ЗП всех специалистов по возрастанию у специалистов у которых ЗП равна 1100, 1500, 2000
+ select employee_name as name,role_name as job,monthly_salary as salary from roles_employees
+ join roles
+ on roles_employees.role_id = roles.id 
+ join employees
+ on roles_employees.employee_id = employees.id 
+ join employees_salary
+ on employees_salary.employee_id = employees.id 
+ where monthly_salary in (1100,1500,2000)
+ order by monthly_salary 
